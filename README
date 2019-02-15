@@ -1,0 +1,102 @@
+Task1:
+    -salvez in ebx adresa din ecx, adica adresa sirului citit din fisier
+    -pe parcursul temei a tinut in edi adresa la care ma aflu in sirul dat
+    -creez procedura lungime care primeste ca parametru inceputul unui sir
+    si intoarce in eax numarul de litere al sirului
+    -creez procedura xor_strings care primeste ca parametri doua siruri si
+    modifica in place primul sir astfel incat acesta sa contina rezultatul
+    operatiei xor intre fiecare dintre bytes ii celor doua siruri primite
+Task2:
+    -modific edi-ul rezultat in urma task ului 1 astfel incat sa indice catre
+    inceputul urmatorului sir
+    -creez procedura rolling_xor care primeste ca parametru un sir codificat
+    si realizeaza xor intre bytes ii succesivi ai acestuia si modifica in place
+    sirul primit ca parametru
+Task3:
+    -creez procedura xor_hex_strings care primeste ca parametri cele doua siruri: mesajul 
+    criptat si cheia. Cele doua siruri sunt convertite din siruri de caractere hexazecimale
+    in forma binara prin apelul procedurii string_of_chars_to_hex. Apoi, cele doua siruri
+    sunt trimise ca parametri procedurii xor_strings construita la task ul 1
+    -creez procedura string_of_chars_to_hex care primeste ca parametru un sir, itereaza
+    prin acesta (incepand de la sfarsit) luand pe rand cate doi bytes consecutivi pe
+    care ii transforma in valoarea corespunzatoare simbolului in hex al codului ascii
+    pe care il au prin apelul procedurii char_to_hex. Al doilea caracter (cel mai din stanga)
+    este inmultit cu 16 si se aduna la primul iar rezultatul se salveaza in sirul primit
+    ca parametru dar incepand cu o alta adresa, care se intoarce in eax
+    -creez procedura char_to_hex care primeste ca parametru o valoare de dimensiunea
+    unui byte reprezentata printr un caracter din baza hex (0123456789abcdef) si 
+    intoarce in registrul eax valoarea acestui caracter ca simbol din baza 16 (0-15)
+Task4:
+    -imi aloc un spatiu de 200 de bytes pe stiva si apelez procedura base32decode
+    -creez procedura base32decode care primeste ca parametru sirul citi din fisier corespunzator
+    acestui task si construieste sirul decodificat in zona de memorie alocata inaine pe stiva.
+    Procedura itereaza prin sirul primit, actualizeaza indexul urmator la care trebuie introdusa valoarea
+    decodificata a caracterului (decodificata prin procedura aflare_valoare) prin procedura
+    aflare_index si pune valoarea decodificata in zona de memorie alocata prin apelul procedurii
+    decode_char. In functie de informatia primita din procedura aflare_index se trece sau nu la
+    urmatorul byte.
+    -creez procedura aflare_index care primeste ca parametru un index la care ar trebui sa
+    inceapa cei 5 biti corespunzatori unei valori si intoarce in eax informatia daca se trece sau
+    nu la urmatorul byte (1 sau 0) si in ebx indexul urmatorului byte
+    -creez procedura aflare_valoare care primeste ca parametru adresa unui caracter (sir) si
+    in functie de codul ascii al acestui caracter, conform tabelului dat in cerinta, se afla
+    valoare corespunzatoare celor 5 biti pe care ii codifica caracterul
+    -creez procedura decode_char care primeste ca parametri valoarea codificata, indexul din
+    byte ul in care se salveaza valoarea si adresa byte ului unde se salveaza valoarea.In functie
+    de index ul de unde incepe valoarea (daca este mai mic sau egal decat 3 sau mai mare ca 3),
+    valoarea poate sa ocupe doar byte ul primit sau poate sa ocupe si byte ul urmator. In
+    ambele cazuri se shifteaza valoarea astfel incat bitii sa fie consecutivi si valoarea sa
+    inceapa de la indexul primit ca parametru
+Task5:
+    -imi aloc un spatiu de 4 octeti pentru adresa cheii
+    -creez procedura bruteforce_singlebyte_xor care primeste ca parametri adresa sirului si adresa
+    cheii. Dupa apelul procedurii find_key, rezultatul acesteia se salveaza la adresa cheii si se
+    va realiza intr o bucla pentru fiecare byte al sirului xor intre cheie si byte iar rezultatul
+    va suprascrie vechiu sir primit ca parametru
+    -creez procedura find_key care primeste ca parametru adresa sirului si intoarce in registrul 
+    eax cheia. Cum pentru fiecare byte al mesajului codificat, xor intre acesta si byte ul mesajului
+    decodificat da cheia, procedura itereaza prin sir si se opreste cand se gaseste o secventa de 5
+    octeti (incepand cu caracterul la care ma aflu in sir) care prin xor caracterele de pe aceleasi
+    pozitii din sirul "force" dau aceeasi valoare. Valoarea obtinuta este cheia si va fi intoarsa in
+    registrul eax
+Task6:
+    -imi aloc spatiu pentru tabela de substitutie
+    -creez procedura break_substitution care primeste ca parametri adresa tabelului si adresa sirului.
+    Prin apelul procedurii construire_tabel_original se adauga pe pozitiile pare ale tabelului caracterele
+    considerate (literele plus space si punct) in ordinea descrescatoare a numarului lor de aparitii.
+    Prin apelul procedurii construire_tabel_subst se completeaza pozitiile impare cu codificarea caracterelor
+    de pe pozitiile pare. Se parcurge printr o bucla sirul primit ca parametru si pentru fiecare caracter
+    codificat din acesta, se va apela functia cauta_in_tabel care intoarce in eax caracterul decodificat.
+    Caracterul codificat este inlocuit in sir cu rezultatul obtinut (caracterul decodificat). Se apeleaza
+    procedura construire_tabel_ordonat care ordoneaza tabelul alphabetic dupa caracterele de pe pozitiile
+    pare urmate de space si apoi de punct
+    -creez procedura construire_tabel_original care primeste ca parametru adresa tabelului si adauga pe 
+    pozitiile pare ale tabelului caracterele considerate (literele plus space si punct) in ordinea descrescatoare 
+    a numarului lor de aparitii
+    -creez procedura construire_tabel_subst care primeste ca parametri adresa tabelului si adresa sirului. Se
+    construieste un vector a carui adresa se salveaza in edx si a carui 28 de elemente se fac 0. Consider ca
+    ficare pozitie pos din vector corespunde caracterului de pe pozitia 2*pos din tabel si are ca valoare
+    numarul de aparitii al elementului de pe pozitia 2*pos din tabelul de subtitutie in sir. In bucla 
+    loop_vector se parcurge sirul si pentru fiecare caracter al acestuia se apeleaza procedura actualizeaza_vector
+    care adauga 1 pe pozitia corespunzatoare in vector. Astfel vectorul meu tine numarul de aparitii a fiecarui
+    caracter. In bucla loop7 se apeleaza procedura find_freq_char care intoarce pozitia pos in vector corespunzatoare
+    celui mai frecvent caracter care nu afost deja intors. Cum pozitia pos in vector corespunde pozitie 2*pos in
+    tabela inseamna ca pe pozitia 2*pos_la_care_am_ajuns+1 din tabela (caracterul codificat al caracterului de pe 
+    pozitia pos_la_care_am_ajuns) se va pune caracterul de la pozitia 2*pos din tabela. Cum am 28 de elemente in
+    vector (caractere) voi executa bucla de 28 de ori
+    -creez procedura acutualizeaza_vector care primeste ca parametri adresa caracterului, adresa tabelului si adresa 
+    vectorului. In bucla loop12 se adauga 2 la adresa tabelei pana cand se obtine adresa caracterului primit ca parametru.
+    Odata gasit caracterul, contorul ecx va avea pozitia caracterului in vector si se va incrementa valoarea vectorului
+    la aceasta pozitie
+    -creez procedura find_freq_char care primeste ca parametru adresa vectorului si intoarce pozitia in vector a 
+    elementului cel mai mare. Se incepe cu pozitia -1 si valoarea 0 si se itereaza in bucla loop8 prin cele 28 de
+    elemente ale vectorului. Daca se gaseste o valoare de -1 inseamna ca acest element a fost deja selectat si se
+    trece mai departe iar daca se gaseste o valoare mai mare se modifica valoarea si pozitia cu cele ale elementului
+    gasit. La pozitia gasita in urma iteratiei se pune valoarea -1 pentru a se marca elementul ca fiind selectat deja
+    -creez procedura cauta_in_tabel care primeste ca parametri un caracter din sir si adresa tabelului si intoarce caracterul
+    decodificat. In bucla loop11 se parcurg toate pozitiile impare din tabela (caracterele codificate) pana se gaseste
+    caracterul primit ca parametru. La sfarsit, din adresa obtinuta, se scade 1 pentru a se obtine adresa in tabela a 
+    caracterului decodificat
+
+    -Prin schimbarea ordinii caracterelor in procedura construire_tabel_original pot schimba decodificarea caracterelor
+    codificate in functie de frecventa lor. Dupa mai multe interschimbari ajung la ordinea data in procedura
